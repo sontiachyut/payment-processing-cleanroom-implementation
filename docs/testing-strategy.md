@@ -6,7 +6,7 @@ No automated test implementation, load run or measurement exists. [PS-01–PS-12
 
 Pure policy tests cover money bounds, lifecycle transitions, reservation arithmetic, retry classification and routing eligibility. API tests cover validation/auth/tenant-safe errors and stable resource semantics. PostgreSQL/Testcontainers integration covers actual constraints, aborted transactions, locks, versions and restart persistence; in-memory substitutes cannot prove these semantics. Adapter contract tests use independent stateful simulators and source amount/status integrity. Kafka/Testcontainers checks publication/consumption/rebalance with real DB effects. Webhook tests verify raw-body signatures, durable inbox and observation merge. Reconciliation fixtures cover exact IDs, signs, completeness and corrections.
 
-Use requested JUnit 5 baseline, Mockito only at genuine boundaries and Testcontainers after the runtime compatibility gate is resolved. Do not force a mismatched managed dependency or silently choose unsupported Boot to claim conformance to the stack list.
+Use Spring Boot-managed JUnit 6/Jupiter, Mockito only at genuine boundaries and Testcontainers for real dependency semantics. Verify and pin compatible Spring Boot 4.x and test-library patches in milestone 1; avoid independently overriding managed versions without a demonstrated reason.
 
 ## Race and crash protocol
 

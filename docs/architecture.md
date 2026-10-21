@@ -36,7 +36,7 @@ Begin one deployable with business packages and one DB. A worker process from th
 
 Java 21/Maven/Spring Web introduce conventional request, DI and transaction concepts. JPA handles routine mappings; narrow SQL is appropriate for row/work claiming. Flyway arrives with persistence. Testcontainers verifies actual PostgreSQL/Kafka semantics; Mockito isolates declared adapters rather than replacing transaction tests. Resilience4j adds per-provider capacity/breakers only after classified retry behavior is explicit. k6 arrives at milestone 10; Micrometer/structured logs begin earlier, OTel/Prometheus/Grafana consolidate operational visibility.
 
-Docker Compose later provides local dependency reproducibility. GitHub Actions follows reproducible local tests. ECS/RDS deployment is milestone 11 work requiring approval and cost/security review, with no infrastructure files in milestone 0. The JUnit 5 versus supported Boot generation decision is documented in [ADR 006](adr/006-runtime-and-infrastructure.md).
+Docker Compose later provides local dependency reproducibility. GitHub Actions follows reproducible local tests. ECS/RDS deployment is milestone 11 work requiring approval and cost/security review, with no infrastructure files in milestone 0. Java 21, Spring Boot 4.x and Boot-managed JUnit 6/Jupiter are selected; compatible patch versions will be verified at M1. See [ADR 006](adr/006-runtime-and-infrastructure.md).
 
 ## Operational boundaries
 

@@ -44,16 +44,16 @@ See [architecture](docs/architecture.md), [domain model](docs/domain-model.md), 
 
 | Layer | Baseline and adoption |
 | --- | --- |
-| Runtime/API | Java 21, Maven, Spring Boot, Spring Web |
+| Runtime/API | Java 21, Maven, Spring Boot 4.x, Spring Web |
 | Data | PostgreSQL, Spring Data JPA/Hibernate, Flyway; explicit SQL for coordination where clearer |
 | Reliability | Durable operation state first; Resilience4j for bounded provider isolation and classified retries |
 | Events | Transactional outbox, Apache Kafka, idempotent consumers at milestone 7 |
-| Testing | Requested JUnit 5 baseline, Mockito, Testcontainers; Boot/JUnit support compatibility is an explicit pre-implementation decision |
+| Testing | Spring Boot-managed JUnit 6/Jupiter, Mockito, Testcontainers |
 | Performance | k6 against simulated processors; 100/500/1,000 requests per second are exploratory targets, not results |
 | Visibility | OpenTelemetry, Micrometer, Prometheus, Grafana |
 | Environments | Docker Compose locally; GitHub Actions and AWS ECS/RDS only in later approved milestones |
 
-Redis, microservices, Kubernetes, and a workflow engine are not initial requirements. Spring Boot 3.5's OSS support has ended, while current Boot 4.x manages JUnit 6. The plan preserves the requested JUnit 5 requirement and makes the supported-version choice an explicit milestone-1 gate rather than silently choosing an unsupported runtime or changing test generations. [Technology decision](docs/adr/006-runtime-and-infrastructure.md).
+Java 21, Spring Boot 4.x and Boot-managed JUnit 6/Jupiter are the selected baseline. Exact compatible patches will be verified and pinned in milestone 1. Redis, microservices, Kubernetes, and a workflow engine are not initial requirements. [Technology decision](docs/adr/006-runtime-and-infrastructure.md).
 
 ## Engineering depth and design decisions
 

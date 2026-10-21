@@ -18,6 +18,6 @@ Use one small approved assignment at a time. Explain the problem, inspect the re
 | M11 | Sandbox limitations, versions/credentials, cloud operational/cost boundaries | Separate actual Stripe observations from local injected faults; [Stripe testing](https://docs.stripe.com/testing) |
 | M12 | User authority versus financial authorization, cross-system saga, independent contracts | Explain AC-07 compensation from actual payment/dispense state; [shared design](commerce-integration.md) |
 
-First future implementation assignment: approve M1, resolve supported Boot/test-generation choice, then build one persisted nonfinancial resource and explain transaction/restart behavior. Do not start the full payment lifecycle or cloud setup in that session unless specifically approved.
+First future implementation assignment: approve M1, verify compatible patches for the selected Java 21/Spring Boot 4.x/JUnit 6 baseline, then build one persisted nonfinancial resource and explain transaction/restart behavior. Do not start the full payment lifecycle or cloud setup in that session unless specifically approved.
 
 Defer reactive programming, Kubernetes, multiple services, JVM micro-optimization, Redis coordination and multi-region writes until a concrete requirement exists. Learning deep correctness is more valuable here than a large technology inventory.

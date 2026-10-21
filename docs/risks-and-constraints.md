@@ -7,7 +7,7 @@ All application work remains unstarted. No proposed mechanism is a demonstrated 
 | Provider offers neither idempotency nor reliable inquiry | Retain UNKNOWN/escalate; never invent a safe retry guarantee |
 | Old worker continues after lease loss | Fence local effects; provider stable key protects remote replay only under declared semantics; PS-10 |
 | Hot payment contention | Short DB lock and one active operation first; measure before parallel reservations |
-| Requested JUnit 5 versus supported Boot | Keep requirement visible; owner must resolve compatible supported stack or explicitly approve test-generation change at M1 |
+| Dependency compatibility | Java 21, Spring Boot 4.x and managed JUnit 6/Jupiter are selected; verify and pin compatible patches and integration libraries at M1 |
 | Reference scope exceeds project | Original small domain, no Rust translation or inherited universal guarantees; pinned static inspection only |
 | Reconciliation product not fully verified in OSS | Synthetic deterministic matcher, honest source/documentation distinction |
 | Outbox ordering under concurrent relay | Single relay first; per-payment sequence, gap handling and aggregate-aware ownership before scale-out |
