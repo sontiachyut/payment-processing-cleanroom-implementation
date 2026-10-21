@@ -5,7 +5,7 @@ Current authorization: milestone 0, research/architecture/documentation only. Do
 Future sessions must:
 1. Read README, the relevant milestone, scenario, domain/API design and ADR.
 2. Teach the concrete engineering problem and fundamentals.
-3. Show the pinned Hyperswitch source/test references and distinguish verified behavior from our proposed design.
+3. Explain the relevant design rationale and tests, distinguishing proposed behavior from verified results. Owner-specific study notes are maintained outside this public repository.
 4. Discuss alternatives and obtain the owner's approval before beginning a milestone.
 5. After approval, generate code/tests and supporting changes only within that milestone's authorized scope.
 6. Run checks, debug failures and explain important code paths, transaction/concurrency boundaries and recovery behavior.

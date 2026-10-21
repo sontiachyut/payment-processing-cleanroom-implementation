@@ -1,6 +1,6 @@
 # Proposed processor adapters, routing and recovery
 
-No adapter code or integration configuration exists. Use public Hyperswitch concepts as a reference for normalized boundaries; our interface, simulator behavior and retry rules are original designs.
+No adapter code or integration configuration exists. The proposed interface, simulator behavior and retry rules define explicit capability and normalization boundaries for this project.
 
 ## Common port
 
@@ -21,7 +21,7 @@ Each keeps its own durable effect state separately from Java app state. Resettin
 
 Start deterministic capability/currency eligibility and configured priority. Add per-provider health/breakers without dynamically moving an already dispatched command. Record candidate set, selected provider, rule version, pre-dispatch health and rationale.
 
-Safe fallback: a new authorization has not been dispatched, a selected provider's breaker rejects before IO, or explicit authoritative proof establishes non-execution under a reviewed policy. Ambiguous dispatch/timeout/500 is not permission to try another processor. Distinguish circuit-open admission from an earlier operation already in flight. Do not copy Hyperswitch's GSM configuration or assume its connector-specific retry policy applies universally.
+Safe fallback: a new authorization has not been dispatched, a selected provider's breaker rejects before IO, or explicit authoritative proof establishes non-execution under a reviewed policy. Ambiguous dispatch/timeout/500 is not permission to try another processor. Distinguish circuit-open admission from an earlier operation already in flight. Provider-specific retry policies must be checked against declared capabilities and cannot be assumed universal.
 
 | Observation | Default policy | Evidence needed |
 | --- | --- | --- |
@@ -47,4 +47,4 @@ Introduce a third adapter at milestone 11 using a dedicated sandbox, test-only k
 
 ## Contract verification
 
-One adapter suite covers capability declarations, response mapping, stable replay keys, source amount/currency integrity, inquiry, known decline versus unknown, and retained simulator effect after application restart. Native Hyperswitch tests are reading references, not tests executed against this project. [Reference analysis](reference-analysis.md) records exact paths and gaps.
+One adapter suite covers capability declarations, response mapping, stable replay keys, source amount/currency integrity, inquiry, known decline versus unknown, and retained simulator effect after application restart. Each guarantee requires tests against this project's implementation. [Design rationale](design-rationale.md) records the decisions and their validation boundaries.

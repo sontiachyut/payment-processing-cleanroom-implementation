@@ -1,6 +1,6 @@
 # Proposed modular architecture
 
-All modules and flows are planned. [README](../README.md) contains the context diagram. The design intentionally simplifies Hyperswitch instead of reproducing its distributed deployment or translating Rust traits.
+All modules and flows are planned. [README](../README.md) contains the context diagram. Start with explicit business boundaries and the simplest deployment that meets the correctness requirements; add infrastructure only when a demonstrated requirement justifies it.
 
 | Module | Responsibilities and owned records | Boundary |
 | --- | --- | --- |

@@ -8,7 +8,7 @@ A planned Java/Spring Boot platform for transaction routing and payment lifecycl
 
 This project is an independent clean-room implementation developed to refresh and deepen my understanding of payment processing and distributed backend engineering after previous professional experience in the payments domain. Using public references, general domain knowledge, and original design decisions, I will implement transaction routing, payment lifecycles, concurrency controls, and reliability mechanisms with Java and Spring Boot.
 
-It does not reproduce a former employer's proprietary code, architecture, schemas, endpoints, or internal documents. [Juspay Hyperswitch](https://github.com/juspay/hyperswitch) is a public engineering reference, not a codebase being translated into Java. Production-oriented engineering is the goal; no production use, deployment, or performance is claimed.
+It does not reproduce a former employer's proprietary code, architecture, schemas, endpoints, or internal documents. Production-oriented engineering is the goal; no production use, deployment, or performance is claimed.
 
 ## Problem and planned capabilities
 
@@ -82,7 +82,7 @@ Planned validation uses real PostgreSQL semantics, deterministic race barriers, 
 ## Technical documentation
 
 - [Requirements and scope](docs/requirements.md)
-- [Hyperswitch source and test analysis](docs/reference-analysis.md)
+- [Design rationale and tradeoffs](docs/design-rationale.md)
 - [Architecture](docs/architecture.md), [domain model](docs/domain-model.md), [API contracts](docs/api-contracts.md)
 - [Processor integrations and retry classification](docs/processor-integrations.md)
 - [PS-01 through PS-12](docs/production-scenarios.md)

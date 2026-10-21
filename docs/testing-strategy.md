@@ -26,4 +26,4 @@ High volume uses only simulators, never Stripe sandbox or LLM APIs. Stripe test 
 
 Shared future fixtures in [commerce contract](commerce-integration.md) map every PS to commerce assertions. Contract-negative/security tests verify amount/hash/scope mismatch, replay and unknown schema. Java must work with commerce absent. Cloud/deployment/CI tests are later approved work, not configured now.
 
-Milestone evidence includes actual command/result, seed/config, reviewed failure and remaining limitation. Reading Hyperswitch tests does not make ours pass. Generated tests are unvalidated until executed against their intended dependencies; no result is fabricated.
+Milestone evidence includes actual command/result, seed/config, reviewed failure and remaining limitation. Reviewing external examples does not establish this project's correctness. Generated tests are unvalidated until executed against their intended dependencies; no result is fabricated.

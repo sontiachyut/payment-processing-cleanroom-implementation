@@ -1,6 +1,6 @@
 # Twelve mandatory payment production scenarios
 
-All scenarios are future acceptance requirements, not implemented tests or observed results. Reference IDs H1–H17 resolve to pinned sources in [reference analysis](reference-analysis.md); those sources motivate concepts and do not certify our proposed guarantees. Every scenario remains mandatory.
+All scenarios are future acceptance requirements, not implemented tests or observed results. The [design rationale](design-rationale.md) explains the proposed correctness boundaries; each guarantee must be established by this project's own tests. Every scenario remains mandatory.
 
 ## PS-01 — Concurrent duplicate authorization
 
@@ -11,7 +11,7 @@ All scenarios are future acceptance requirements, not implemented tests or obser
 - **Tests/fault injection:** barrier-release 50 connections, same/different payload, commit then lose HTTP response, roll back winner, two JVMs.
 - **Acceptance:** one canonical accepted operation and one eventual simulator effect; no inconsistent replay body.
 - **Interview:** what linearizes the command? Why can't a JVM map or an aborted-transaction lookup solve it?
-- **References:** H2/H15/H17 give operation/locking boundaries; our same-key database strategy and race tests are original. Milestone 3.
+- **Design references:** [API contracts](api-contracts.md) and [domain model](domain-model.md) define same-key replay and operation identity. Prove them under simultaneous requests. Milestone 3.
 
 ## PS-02 — Processor succeeds but response is lost
 
@@ -22,7 +22,7 @@ All scenarios are future acceptance requirements, not implemented tests or obser
 - **Tests/fault injection:** simulator effect-then-drop-response, worker kill before finalization, inquiry unavailable then restored, key-retention expiry.
 - **Acceptance:** one simulator effect; local state becomes source-confirmed or honestly unknown; client replay never starts another authorization.
 - **Interview:** can rollback undo a charge? What if provider supports neither idempotency nor reliable inquiry?
-- **References:** H10/H11/H17 and Stripe sync test; our explicit unknown reservation/fence policy is proposed. Milestone 5.
+- **Design references:** [Processor integration](processor-integrations.md) defines uncertainty, status synchronization, and stable operation identity. Milestone 5.
 
 ## PS-03 — Processor outage and fallback
 
@@ -33,7 +33,7 @@ All scenarios are future acceptance requirements, not implemented tests or obser
 - **Tests/fault injection:** breaker open before send, connection loss after send, different capability sets, healthy B under A saturation.
 - **Acceptance:** route history explains every choice; no cross-provider duplicate effect; B progresses for eligible new work.
 - **Interview:** what evidence makes fallback safe? Does an open breaker prove an earlier request failed?
-- **References:** H8/H9 and routing tests; no blanket Hyperswitch fallback guarantee inferred. Milestones 4–5.
+- **Design references:** [Processor integration](processor-integrations.md) separates new-payment routing from recovery of an existing uncertain attempt. Milestones 4–5.
 
 ## PS-04 — Concurrent capture
 
@@ -44,7 +44,7 @@ All scenarios are future acceptance requirements, not implemented tests or obser
 - **Tests/fault injection:** capture/capture and capture/cancel barriers, different keys, lock timeout, stale worker, duplicate success observations.
 - **Acceptance:** no overcapture; losing command never reaches provider; totals remain valid after crash/replay.
 - **Interview:** why is a pre-transaction amount check insufficient? Which isolation anomaly matters?
-- **References:** H3 and capture/partial-capture tests establish inspected validation paths, not our concurrent balance proof. Milestone 6.
+- **Design references:** [Domain model](domain-model.md) defines capture reservations and financial invariants; concurrent tests must prove the balance bound. Milestone 6.
 
 ## PS-05 — Concurrent refunds
 
@@ -55,7 +55,7 @@ All scenarios are future acceptance requirements, not implemented tests or obser
 - **Tests/fault injection:** two distinct-key refunds, same-key replay, effect-then-timeout, late success/failure, duplicate webhook/inquiry, currency/overflow boundaries.
 - **Acceptance:** no over-refund and one local effect per operation; captured payment remains captured when refund fails.
 - **Interview:** when is budget available again? Why does a timeout not release the reservation?
-- **References:** H5/H12 provide refund/recovery separation; our reservation/race tests are original. Milestone 6.
+- **Design references:** [Domain model](domain-model.md) defines refundable balances, pending reservations, and unknown outcomes. Milestone 6.
 
 ## PS-06 — Rate limiting and transient failures
 
@@ -66,7 +66,7 @@ All scenarios are future acceptance requirements, not implemented tests or obser
 - **Tests/fault injection:** fake 429/Retry-After, 500 after effect, slow A/healthy B, exhausted budget, full executor/DB pool, retry amplification probe.
 - **Acceptance:** bounded calls per operation, no memory queue explosion, predictable 429/503 admission and recoverable accepted work.
 - **Interview:** breaker, bulkhead and retry solve what different problems? Why can more threads worsen throughput?
-- **References:** H9/H13 and retry metrics; our explicit matrix is narrower. Milestones 5/10.
+- **Design references:** [Processor integration](processor-integrations.md) defines error classification and bounded retry eligibility; [testing strategy](testing-strategy.md) covers saturation. Milestones 5/10.
 
 ## PS-07 — Duplicate and out-of-order webhooks
 
@@ -77,7 +77,7 @@ All scenarios are future acceptance requirements, not implemented tests or obser
 - **Tests/fault injection:** duplicate and permutation corpus, invalid signature, new event ID/same effect, reused ID/changed body, stale summary and crash after inbox commit.
 - **Acceptance:** one effect, retained history, no final→pending rollback, no unverified event mutating state.
 - **Interview:** why aren't timestamps sufficient? Why doesn't deduplicating webhook ID prevent all duplicate effects?
-- **References:** H14/H15; provider-specific replay guarantees not generalized. Milestone 8.
+- **Design references:** [API contracts](api-contracts.md) and [processor integration](processor-integrations.md) define webhook identity, verification, and authoritative synchronization. Milestone 8.
 
 ## PS-08 — DB commit succeeds, publication fails
 
@@ -88,7 +88,7 @@ All scenarios are future acceptance requirements, not implemented tests or obser
 - **Tests/fault injection:** fail before DB commit, after commit, after broker effect, before marker; rollback must publish no committed fact.
 - **Acceptance:** state and intent both/neither; replay contains original identity; bounded backlog monitored and recoverable.
 - **Interview:** what atomicity gap does outbox solve, and which gap remains? Does it deliver exactly once?
-- **References:** H16 motivates notification retries; this outbox implementation is our design, not verified Hyperswitch behavior. Milestone 7.
+- **Design references:** [Architecture](architecture.md) and [design rationale](design-rationale.md) explain atomic business-state/outbox writes and publication recovery. Milestone 7.
 
 ## PS-09 — Duplicate Kafka consumption
 
@@ -99,7 +99,7 @@ All scenarios are future acceptance requirements, not implemented tests or obser
 - **Tests/fault injection:** kill after DB/before offset, reset isolated group offsets, duplicate outbox publication, reversed versions, unknown major schema.
 - **Acceptance:** count of canonical effects/cases unchanged after replay; every committed valid fact accounted for or visibly quarantined.
 - **Interview:** where does Kafka's exactly-once scope end? Why isn't producer idempotence sufficient?
-- **References:** no inspected Hyperswitch test proves this project-specific guarantee; use official [Kafka semantics](https://kafka.apache.org/43/design/design/). Milestone 7.
+- **Design references:** official [Kafka semantics](https://kafka.apache.org/43/design/design/) distinguish broker guarantees from application-side idempotent effects. Milestone 7.
 
 ## PS-10 — Recovery worker crashes mid-operation
 
@@ -110,7 +110,7 @@ All scenarios are future acceptance requirements, not implemented tests or obser
 - **Tests/fault injection:** kill/pause before/after effect, expire lease, start second worker, release old worker, lose DB connection, unavailable inquiry.
 - **Acceptance:** every accepted operation is final or visibly unresolved; stale owner cannot overwrite new state; reservations remain correct.
 - **Interview:** what protects local state versus remote effects? Why test process pause as well as kill?
-- **References:** H10/H12/H13 scheduling and synchronization; our fencing policy is original. Milestone 8, foundations in 5.
+- **Design references:** [Domain model](domain-model.md) and [processor integration](processor-integrations.md) define durable work ownership, fencing, and inquiry before replay. Milestone 8, foundations in 5.
 
 ## PS-11 — Settlement mismatch
 
@@ -121,7 +121,7 @@ All scenarios are future acceptance requirements, not implemented tests or obser
 - **Tests/fault injection:** duplicate batch/row, mid-import crash, late correction, amount/fee/net inconsistency, missing after grace, incomplete window, ambiguous references.
 - **Acceptance:** repeat import/match is idempotent; exception includes source row/window/reason; no automatic refund or invented bank settlement.
 - **Interview:** what proves settlement should exist already? Why is net payout not gross capture?
-- **References:** public reconciliation example is documentation-only evidence, not inspected engine code. Milestone 9.
+- **Design references:** [Settlement normalization](domain-model.md#settlement-normalization) defines report completeness, amount components, and matching assumptions. Milestone 9.
 
 ## PS-12 — High-volume concurrency and backpressure
 
@@ -132,4 +132,4 @@ All scenarios are future acceptance requirements, not implemented tests or obser
 - **Tests/fault injection:** baseline then exploratory 100/500/1,000 RPS if machine/correctness permits; hot key, replay storm, slow provider, Kafka/DB pressure, stop-before-exhaustion bounds.
 - **Acceptance:** report offered/accepted/rejected/completed/unknown counts, simulator effect reconciliation, p95/p99, queue/lock/pool metrics, hardware/config/seed; no external load traffic or fabricated targets-as-results.
 - **Interview:** can higher HTTP throughput mean fewer financial completions? What is the bottleneck and evidence?
-- **References:** Hyperswitch metrics/topology are contextual, not our benchmark. Milestone 10.
+- **Design references:** [Testing strategy](testing-strategy.md) defines repeatable synthetic workloads, correctness checks, and measured performance reporting. Milestone 10.
