@@ -21,3 +21,17 @@ Use one small approved assignment at a time. Explain the problem, inspect the re
 First future implementation assignment: approve M1, verify compatible patches for the selected Java 21/Spring Boot 4.x/JUnit 6 baseline, then build one persisted nonfinancial resource and explain transaction/restart behavior. Do not start the full payment lifecycle or cloud setup in that session unless specifically approved.
 
 Defer reactive programming, Kubernetes, multiple services, JVM micro-optimization, Redis coordination and multi-region writes until a concrete requirement exists. Learning deep correctness is more valuable here than a large technology inventory.
+
+## Practical engineering evidence checklist
+
+Use this as a personal checklist while implementing the approved milestones. Check an item only after completing the work, debugging it, and being able to explain the evidence. Planned milestones are pointers, not claims that the experience already exists.
+
+- [ ] Develop and debug multithreaded application behavior, including bounded executors, cancellation and safe shutdown. Relevant milestones: M5, M7 and M10.
+- [ ] Reproduce and resolve concurrency or synchronization failures rather than relying only on happy-path tests. Relevant milestones: M3 and M6.
+- [ ] Diagnose production-like incidents using correlated logs, metrics, traces, thread dumps and a debugger. Relevant milestones: M8 and M10.
+- [ ] Design and consume versioned network APIs, including timeout, retry, authentication and compatibility behavior. Relevant milestones: M1, M4, M11 and M12.
+- [ ] Build and explain streaming or event-driven processing with ordering, redelivery and idempotent consumption. Relevant milestone: M7.
+- [ ] Write and analyze SQL against the project PostgreSQL database, including transactions, locks, constraints, indexes and execution plans. Relevant milestones: M1, M3, M6 and M10.
+- [ ] Profile application performance and identify the measured bottleneck before optimizing it. Relevant milestone: M10.
+- [ ] Operate and support the application while it is actively used, using incidents and operational evidence to improve it. This cannot be claimed from a local simulation alone; it requires an explicitly approved deployed environment and real users.
+- [ ] Write automated unit, integration, contract, concurrency, recovery and fault-injection tests. Relevant throughout M1-M12.
